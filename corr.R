@@ -11,11 +11,15 @@ corr <- function(directory, threshold = 0) {
   
   file.list <- list.files(directory)
   complete.obs <- complete(directory, 1:332)
-  is.above.threshold <- complete.obs$nobs >= threshold
+  is.above.threshold <- complete.obs$nobs > threshold
   monitors.above.threshold <- complete.obs[is.above.threshold, "id"]
   monitors <- length(monitors.above.threshold)
   
   correlations <- vector("numeric", monitors)
+  
+  if (monitors == 0){
+    return(correlations)
+  }
    
   for(i in 1:monitors){
     current.file <- read.csv(file.path(directory, file.list[monitors.above.threshold[i]]))
@@ -25,5 +29,6 @@ corr <- function(directory, threshold = 0) {
   }
 
   correlations
+
   
 }
